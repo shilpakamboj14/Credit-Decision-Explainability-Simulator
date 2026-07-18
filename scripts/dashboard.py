@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
-from explain import get_decision_text
+from scripts.explain import get_decision_text
 
 # Load our already-trained model and scaler (no retraining happens here)
 model = joblib.load("/Users/shilpa/credit_project/data/model.pkl")

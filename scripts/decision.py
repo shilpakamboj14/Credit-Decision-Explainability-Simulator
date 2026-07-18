@@ -1,6 +1,6 @@
 import pandas as pd
 import joblib
-from explain import get_decision_text
+from scripts.explain import get_decision_text
 
 model = joblib.load("/Users/shilpa/credit_project/data/model.pkl")
 scaler = joblib.load("/Users/shilpa/credit_project/data/scaler.pkl")
