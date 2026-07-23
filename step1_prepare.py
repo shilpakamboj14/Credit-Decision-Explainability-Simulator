@@ -1,6 +1,10 @@
 import pandas as pd
+from pathlib import Path
 
-data = pd.read_csv("/Users/shilpa/credit_project/data/cs-training.csv")
+BASE_DIR = Path(__file__).parent
+DATA_DIR = BASE_DIR / "data"
+
+data = pd.read_csv(DATA_DIR/ "cs-training.csv")
 
 data = data.rename(columns={"Unnamed: 0": "cust_id"})
 
@@ -10,7 +14,13 @@ columns_needed = ["cust_id", "SeriousDlqin2yrs", "RevolvingUtilizationOfUnsecure
 
 data = data[columns_needed]
 
+
+
 median_income = data["MonthlyIncome"].median()
 data["MonthlyIncome"] = data["MonthlyIncome"].fillna(median_income)
 
-data.to_csv("/Users/shilpa/credit_project/data/cleaned_data.csv", index=False)
+
+data.to_csv(DATA_DIR / "cleaned_data.csv", index=False)
+print(data[columns_needed].isnull().sum())
+
+print(data.shape)

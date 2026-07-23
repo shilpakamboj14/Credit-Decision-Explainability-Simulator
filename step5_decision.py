@@ -1,11 +1,16 @@
 import pandas as pd
 import joblib
-from scripts.explain import get_decision_text
+from pathlib import Path
+from step3_explain import get_decision_text
 
-model = joblib.load("/Users/shilpa/credit_project/data/model.pkl")
-scaler = joblib.load("/Users/shilpa/credit_project/data/scaler.pkl")
+BASE_DIR = Path(__file__).parent
+DATA_DIR = BASE_DIR / "data"
 
-data = pd.read_csv("/Users/shilpa/credit_project/data/cleaned_data.csv")
+
+model = joblib.load(DATA_DIR / "model.pkl")
+scaler = joblib.load(DATA_DIR / "scaler.pkl")
+data = pd.read_csv(DATA_DIR / "cleaned_data.csv")
+
 features = data.drop(["SeriousDlqin2yrs", "cust_id"], axis=1)
 features_scaled = scaler.transform(features)
 

@@ -1,23 +1,43 @@
+
+
 import streamlit as st
 import pandas as pd
 import joblib
-from scripts.explain import get_decision_text
+from step3_explain import get_decision_text
+
+from pathlib import Path
+
+BASE_DIR = Path(__file__).parent
+DATA_DIR = BASE_DIR / "data"
+
 
 # Load our already-trained model and scaler (no retraining happens here)
-model = joblib.load("/Users/shilpa/credit_project/data/model.pkl")
-scaler = joblib.load("/Users/shilpa/credit_project/data/scaler.pkl")
+model = joblib.load(DATA_DIR / "model.pkl")
+scaler = joblib.load(DATA_DIR / "scaler.pkl")
+data = pd.read_csv(DATA_DIR / "cleaned_data.csv")
 
 # Load the cleaned dataset — needed as SHAP's "baseline" for comparison
-data = pd.read_csv("/Users/shilpa/credit_project/data/cleaned_data.csv")
 features = data.drop(["SeriousDlqin2yrs", "cust_id"], axis=1)
 features_scaled = scaler.transform(features)
+
+st.info("""
+**Model trained on:** Kaggle's "Give Me Some Credit" dataset (~150,000 historical loan applicants)
+
+**Model:** Logistic Regression, with class weighting to handle imbalanced default rates
+
+**Performance on unseen test data:**
+- Defaulter recall: 46% (catches 46% of applicants who actually default)
+- Defaulter precision: 30%
+- Non-defaulter recall: 92%
+- Overall accuracy: 90%
+""")
 
 # --- Page header ---
 st.set_page_config(layout="wide")
 st.title("💳 Credit Decision Explainability Simulator")
 st.caption("An ML-based credit decisioning tool that explains every decision in plain English — built to reflect ECOA adverse action notice requirements.")
 
-st.markdown("---")
+st.markdown("--")
 
 # --- Applicant details section ---
 st.subheader("Applicant Details")
